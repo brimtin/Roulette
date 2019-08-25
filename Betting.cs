@@ -26,7 +26,42 @@ namespace Roulette
         int split;
         int[,] corner = new int[22,4];
 
+public void Menu()
+        {
+            Console.WriteLine("\t\t\tWELCOME MY ROULETTE GAME");
+            Console.WriteLine("__________________________________________________________");
+            Console.WriteLine();
+            Console.WriteLine($"\t\t\t\t\t\t\tCURRENT MONEY:{money}");
 
+            Console.WriteLine("Please enter the amount you'd like to bet.......");
+            var ValidBetAmount = int.TryParse(Console.ReadLine(), out betAmount);
+
+            while(!ValidBetAmount && betAmount <= money)
+            {
+                Console.WriteLine("YOU DO NOT HAVE ENOUGH MONEY TO PLACE THAT BET. PLEASE REENTER YOUR BET.......");
+                ValidBetAmount = int.TryParse(Console.ReadLine(), out betAmount);
+            }
+
+            DisplayBets();
+
+        }
+ private void Win()
+        {
+            money += betAmount;
+            winCount++;
+
+            Console.WriteLine($"NUMBER ROLLED: {results.Item1} COLOR: {results.Item2}");
+            Console.WriteLine($"CONGRATULATIONS YOU WON {betAmount}");
+        }
+
+        private void Lose()
+        {
+            money -= betAmount;
+            winCount--;
+
+            Console.WriteLine($"NUMBER ROLLED: {results.Item1} COLOR: {results.Item2}");
+            Console.WriteLine($"YOU DID NOT WIN..... BETTER LUCK NEXT TIME!");
+        }
 
 
         private void SetCornerValues()
@@ -156,8 +191,7 @@ namespace Roulette
             Console.Clear();
             
             Console.Write("1.PICK WINNING NUMBER||2.EVEN/ODD||3.COLOR||4.LOWS/HIGHS||5.DOZENS" +
-                          "||6.COLUMNS||7.STREET||8.DOUBLE ROWS||9.SPLIT||0.CORNER||Enter.PlaceBet");
-            Console.Write($"\t\t\t\t\t\t\t\t\t\t\t\t\t\tCURRENT MONEY:{money}");
+                          "||6.COLUMNS||7.STREET||8.DOUBLE ROWS||9.SPLIT||0.CORNER||Enter.PlaceBet|| ESC.PREVIOUS MENU");
             var bet = Console.ReadKey();
 
             switch (bet.Key)
@@ -206,6 +240,9 @@ namespace Roulette
                 //    WinLoose();
                 //    break;
 
+                case ConsoleKey.Escape:
+                    Menu();
+                    break;
                 default:
                     DisplayBets();
                     break;
@@ -228,7 +265,7 @@ namespace Roulette
                 Lose();
             }
 
-
+            DisplayBets();
         }
 
             private void LowHigh()
@@ -245,7 +282,7 @@ namespace Roulette
                 Console.WriteLine("PLEASE ENTER 1.FOR LOW NUMBERS ||2.FOR HIGH NUMBERS");
 
                 valid = int.TryParse(Console.ReadLine(), out highLow);
-
+            }
                 if (highLow == 1 && results.Item1 < 13)
                 {
                     Win();
@@ -261,9 +298,8 @@ namespace Roulette
                     Lose();
                 }
 
-                
-            }
-
+            DisplayBets();
+            
         }
 
         private void Dozens()
@@ -302,6 +338,8 @@ namespace Roulette
             {
                 Lose();
             }
+
+            DisplayBets();
 
         }
 
@@ -378,6 +416,8 @@ namespace Roulette
             {
                 Lose();
             }
+
+            DisplayBets();
         }
 
         private void Street()
@@ -415,7 +455,7 @@ namespace Roulette
 
             }
 
-
+            DisplayBets();
 
         }
 
@@ -441,6 +481,8 @@ namespace Roulette
                     
                 }
             }
+
+            DisplayBets();
         }
 
         private void Split()
@@ -468,21 +510,11 @@ namespace Roulette
                 Lose();
             }
 
+            DisplayBets();
 
         }
 
-        private void Win()
-        {
-            money += betAmount;
-            winCount++;
-        }
-
-        private void Lose()
-        {
-            money -= betAmount;
-            winCount--;
-        }
-
+       
         private void Corner()
         {
             Console.Clear();
@@ -509,6 +541,7 @@ namespace Roulette
                 }
             }
 
+            DisplayBets();
             
         }
 
@@ -536,6 +569,8 @@ namespace Roulette
             {
                 Lose();
             }
+
+            DisplayBets();
         }
 
         private void EvenOdd()
@@ -566,23 +601,10 @@ namespace Roulette
                 Lose();
             }
 
+            DisplayBets();
         }
 
-        public void Menu()
-        {
-            Console.WriteLine("\t\t\tWELCOME MY ROULETTE GAME");
-            Console.WriteLine("__________________________________________________________");
-            Console.WriteLine();
-            Console.Write("Please enter the amount you'd like to bet.......");
-            var ValidBetAmount = int.TryParse(Console.ReadLine(), out betAmount);
-
-            while(!ValidBetAmount && betAmount <= money)
-            {
-                Console.WriteLine("YOU DO NOT HAVE ENOUGH MONEY TO PLACE THAT BET. PLEASE REENTER YOUR BET.......");
-                ValidBetAmount = int.TryParse(Console.ReadLine(), out betAmount);
-            }
-
-        }
+        
       
 
         bool IsEven()
@@ -598,54 +620,6 @@ namespace Roulette
         }
         
 
-        public bool isLow()
-        {
-            if (results.Item1 < 19)
-            {
-                return true;
-            }
-            else
-            {
-                return false;
-
-            }
-        }
-
-        public bool FirstRow()
-        {
-            if (results.Item1 > 0 &&  results.Item1 < 13)
-            {
-                return true;
-            }
-            else
-            {
-                return false;
-            }
-        }
-        public bool SecondRow()
-        {
-            if (results.Item1 > 12 && results.Item1 < 25)
-            {
-               return true;
-            }
-
-            else
-            {
-                return false;
-            }
-        }
-        public bool ThirdRow()
-        {
-            if (results.Item1 > 24 && results.Item1 < 39)
-            {
-                return true;
-            }
-
-            else
-            {
-                return false;
-            }
-        }
-
+     
     }
 }
